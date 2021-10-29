@@ -20,6 +20,28 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true,
 });
 
+async function run() {
+  try {
+    //
+    await client.connect();
+    const database = client.db('traveler');
+    const service_collection = database.collection('service');
+    console.log('connection success');
+
+    // post services
+    app.post('/addservice', async (req, res) => {
+      const service = req.body;
+      const result = await service_collection.insertOne(service);
+
+      res.json(result);
+    });
+  } finally {
+    //
+  }
+}
+
+run().catch(console.dir);
+
 app.get('/', (req, res) => {
   res.send('i am working');
 });
