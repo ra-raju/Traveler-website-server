@@ -55,8 +55,23 @@ async function run() {
     // post single travel plan
     app.post('/submittedtour', async (req, res) => {
       const tour = req.body;
-      console.log('tourched');
       const result = await tour_collection.insertOne(tour);
+      res.json(result);
+    });
+
+    // get all tour order
+    app.get('/allorders', async (req, res) => {
+      const query = {};
+      const cursor = tour_collection.find(query);
+      const result = await cursor.toArray();
+      res.json(result);
+    });
+
+    //delete journey
+    app.delete('/removejourney/:id', async (req, res) => {
+      const { id } = req.params;
+      const query = { _id: ObjectId(id) };
+      const result = await tour_collection.deleteOne(query);
       res.json(result);
     });
   } finally {
