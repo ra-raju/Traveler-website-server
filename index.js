@@ -26,6 +26,7 @@ async function run() {
     await client.connect();
     const database = client.db('traveler');
     const service_collection = database.collection('service');
+    const tour_collection = database.collection('submitted_tour');
     console.log('connection success');
 
     // post services
@@ -48,6 +49,14 @@ async function run() {
       const { id } = req.params;
       const query = { _id: ObjectId(id) };
       const result = await service_collection.findOne(query);
+      res.json(result);
+    });
+
+    // post single travel plan
+    app.post('/submittedtour', async (req, res) => {
+      const tour = req.body;
+      console.log('tourched');
+      const result = await tour_collection.insertOne(tour);
       res.json(result);
     });
   } finally {
