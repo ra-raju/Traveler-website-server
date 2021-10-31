@@ -74,6 +74,20 @@ async function run() {
       const result = await tour_collection.deleteOne(query);
       res.json(result);
     });
+
+    //update status
+    app.put('/updatestatus/:id', async (req, res) => {
+      const { id } = req.params;
+      const data = req.body;
+      console.log(data);
+      const query = { _id: ObjectId(id) };
+      // const options = { upsert: true };
+      const updateDoc = {
+        $set: { status: data.status },
+      };
+      const result = await tour_collection.updateOne(query, updateDoc);
+      res.json(result);
+    });
   } finally {
     //
   }
