@@ -25,8 +25,10 @@ async function run() {
     //
     await client.connect();
     const database = client.db('traveler');
+    // collection
     const service_collection = database.collection('service');
     const tour_collection = database.collection('submitted_tour');
+    const events_collection = database.collection('events');
     console.log('connection success');
 
     // post services
@@ -86,6 +88,13 @@ async function run() {
         $set: { status: data.status },
       };
       const result = await tour_collection.updateOne(query, updateDoc);
+      res.json(result);
+    });
+
+    app.get('/events', async (req, res) => {
+      const query = {};
+      const cursor = events_collection.find(query);
+      const result = await cursor.toArray();
       res.json(result);
     });
   } finally {
