@@ -6,10 +6,6 @@ require('dotenv').config();
 const app = express();
 const port = process.env.DB_HOST || 8000;
 
-/* 
-traveler
-Y6Ogi1kIUXDTkFwi */
-
 // middleware
 app.use(cors());
 app.use(express.json());
@@ -30,7 +26,6 @@ async function run() {
     const tour_collection = database.collection('submitted_tour');
     const events_collection = database.collection('events');
     const client_message_collection = database.collection('client_message');
-    console.log('connection success');
 
     // post services
     app.post('/addservice', async (req, res) => {
@@ -82,7 +77,7 @@ async function run() {
     app.put('/updatestatus/:id', async (req, res) => {
       const { id } = req.params;
       const data = req.body;
-      console.log(data);
+
       const query = { _id: ObjectId(id) };
       // const options = { upsert: true };
       const updateDoc = {
@@ -100,7 +95,6 @@ async function run() {
     });
     // client message
     app.post('/message', async (req, res) => {
-      console.log('hit');
       const message = req.body;
       const result = await client_message_collection.insertOne(message);
       res.json(result);
