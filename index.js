@@ -29,6 +29,7 @@ async function run() {
     const service_collection = database.collection('service');
     const tour_collection = database.collection('submitted_tour');
     const events_collection = database.collection('events');
+    const client_message_collection = database.collection('client_message');
     console.log('connection success');
 
     // post services
@@ -95,6 +96,13 @@ async function run() {
       const query = {};
       const cursor = events_collection.find(query);
       const result = await cursor.toArray();
+      res.json(result);
+    });
+    // client message
+    app.post('/message', async (req, res) => {
+      console.log('hit');
+      const message = req.body;
+      const result = await client_message_collection.insertOne(message);
       res.json(result);
     });
   } finally {
