@@ -4,7 +4,7 @@ const { MongoClient, ObjectId } = require('mongodb');
 require('dotenv').config();
 
 const app = express();
-const port = process.env.DB_HOST || 8000;
+const port = process.env.PORT || 8000;
 
 // middleware
 app.use(cors());
@@ -79,14 +79,14 @@ async function run() {
       const data = req.body;
 
       const query = { _id: ObjectId(id) };
-      // const options = { upsert: true };
+      const options = { upsert: true };
       const updateDoc = {
         $set: { status: data.status },
       };
-      const result = await tour_collection.updateOne(query, updateDoc);
+      const result = await tour_collection.updateOne(query, updateDoc, options);
       res.json(result);
     });
-
+    // get all event
     app.get('/events', async (req, res) => {
       const query = {};
       const cursor = events_collection.find(query);
